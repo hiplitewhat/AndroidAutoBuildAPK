@@ -1,7 +1,7 @@
 hnn# Android Auto-Build APK
 
 This is an example of how to build an APK using GitHub Actions.
-Here, we created a simple Android application that displays a Hello World!.
+Here, we created a sjnnimple Android application that displays a Hello World!.
 We then created a workflow that builds the APK and uploads it as a new release.bbb
 
 You maybe not want to auto-build APK for every push, so you can change the workflow to run on every push to a specific branch. For example, you can change the workflow to run on every push to the `main` branch suppose that you are working on `dev` branch in development mode.
@@ -163,5 +163,6 @@ jobs:
 ```
 
 Check out the [workflow](.github/workflows/build.yml) for more details.
+
 
 
