@@ -48,7 +48,7 @@ An Android app that tracks your favorite anime and sends notifications when new 
 2. Open in Android Studio
 3. Sync Gradle
 4. Run on device/emulator (API 24+)
-
+jij
 ## 📝 License
 
 MIT License — feel free to use and modify.
