@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <style>
+
+        body { background: #000; color: #fff; font-family: sans-serif; margin: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+        #input-pane { padding: 10px; height: 30%; background: #111; }
+
+        textarea { width: 100%; height: 100%; background: #222; color: #fff; border: 1px solid #333; border-radius: 8px; box-sizing: border-box; padding: 10px; }
+
+        #tap-btn { flex: 1; width: 100%; border: none; background: #22c55e; color: #000; font-size: 24px; font-weight: 900; text-transform: uppercase; }
+
+        #tap-btn:active { background: #16a34a; transform: scale(0.98); }
+
+        .controls { display: grid; grid-template-columns: repeat(3, 1fr); height: 80px; gap: 1px; background: #333; }
+
+        .sub { background: #111; border: none; color: #888; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+
+        .sub:active { background: #222; color: #fff; }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div id="input-pane"><textarea id="lyrics" placeholder="PASTE LYRICS..."></textarea></div>
+
+    <button id="tap-btn" onclick="next()">START</button>
+
+    <div class="controls">
+
+        <button class="sub" onclick="undo()">Undo</button>
+
+        <button class="sub" onclick="set()">Save</button>
+
+        <button class="sub" onclick="load()">Load</button>
+
+    </div>
+
+    <script>
+
+        let lines = [], i = -1, mark = -1;
+
+        function next() {
+
+            if(!lines.length) lines = document.getElementById('lyrics').value.split('\n').filter(l => l.trim());
+
+            if(i < lines.length - 1) { i++; update(); }
+
+        }
+
+        function update() {
+
+            const txt = lines[i];
+
+            document.getElementById('tap-btn').innerText = txt;
+
+            const el = document.createElement('textarea');
+
+            el.value = txt; document.body.appendChild(el);
+
+            el.select(); document.execCommand('copy');
+
+            document.body.removeChild(el);
+
+            if(navigator.vibrate) navigator.vibrate(40);
+
+        }
+
+        function undo() { if(i > 0) { i--; update(); } }
+
+        function set() { mark = i; }
+
+        function load() { if(mark !== -1) { i = mark; update(); } }
+
+    </script>
+
+</body>
+
+</html>
