@@ -1,7 +1,7 @@
 plugins { id 'com.android.application' }
-android { namespace 'Mm.mm.mm'
+android { namespace 'Mm.mmm.mmm'
 compileSdk 33
-defaultConfig { applicationId "Mm.mm.mm"
+defaultConfig { applicationId "Mm.mmm.mmm"
 minSdk 21
 targetSdk 33
 versionCode 1
