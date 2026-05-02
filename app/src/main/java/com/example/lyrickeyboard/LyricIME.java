@@ -1,43 +1,39 @@
 package com.example.lyrickeyboard;
 import android.inputmethodservice.InputMethodService;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.*;
 import android.view.inputmethod.InputConnection;
 import android.graphics.Color;
+import android.view.Gravity;
 
 public class LyricIME extends InputMethodService {
     @Override
     public View onCreateInputView() {
-        ScrollView scroll = new ScrollView(this);
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setBackgroundColor(Color.parseColor("#4f46e5"));
-        layout.setPadding(32, 32, 32, 32);
+        LinearLayout root = new LinearLayout(this);
+        root.setOrientation(LinearLayout.VERTICAL);
+        root.setBackgroundColor(Color.WHITE);
+        root.setPadding(20, 20, 20, 20);
+
+        TextView head = new TextView(this);
+        head.setText("Lyric Keyboard");
+        head.setGravity(Gravity.CENTER);
+        head.setPadding(0, 0, 0, 20);
+        root.addView(head);
 
         String[][] data = {
-            {"Chorus 1", "Never gonna give you up\nNever gonna let you down\nNever gonna run around and desert you"},
-            {"Verse 1", "We're no strangers to love\nYou know the rules and so do I"}
+            {"Chorus", "Hello World!"}
         };
 
-        for (final String[] item : data) {
-            Button btn = new Button(this);
-            btn.setText(item[0]);
-            btn.setAllCaps(false);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, 
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            lp.setMargins(0, 0, 0, 16);
-            btn.setLayoutParams(lp);
-            btn.setOnClickListener(v -> {
+        for (final String[] pair : data) {
+            Button b = new Button(this);
+            b.setText(pair[0]);
+            b.setAllCaps(false);
+            b.setOnClickListener(v -> {
                 InputConnection ic = getCurrentInputConnection();
-                if (ic != null) ic.commitText(item[1] + " ", 1);
+                if (ic != null) ic.commitText(pair[1] + " ", 1);
             });
-            layout.addView(btn);
+            root.addView(b);
         }
-        scroll.addView(layout);
-        return scroll;
+        return root;
     }
 }
