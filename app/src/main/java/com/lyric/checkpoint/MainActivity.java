@@ -5,7 +5,7 @@ import android.widget.*;
 import android.view.*;
 import android.graphics.Color;
 import androidx.appcompat.app.AppCompatActivity;
-import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
     private LinearLayout list;
@@ -14,17 +14,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        p = getSharedPreferences("cp_lyrics", MODE_PRIVATE);
+        p = getSharedPreferences("lyric_data", MODE_PRIVATE);
 
         ScrollView scroll = new ScrollView(this);
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setPadding(40, 60, 40, 60);
-        root.setBackgroundColor(Color.parseColor("#0F0F0F"));
+        root.setBackgroundColor(Color.parseColor("#121212"));
 
         TextView h = new TextView(this);
-        h.setText("Lyric & Checkpoint Editor");
-        h.setTextSize(24);
+        h.setText("Lyric Sequencer Editor");
+        h.setTextSize(22);
         h.setTextColor(Color.WHITE);
         root.addView(h);
 
@@ -39,17 +39,17 @@ public class MainActivity extends AppCompatActivity {
         root.addView(add);
 
         Button save = new Button(this);
-        save.setText("SYNC DATA");
+        save.setText("SYNC TO KEYBOARD");
         save.setOnClickListener(v -> {
             StringBuilder sb = new StringBuilder();
             for(int i=0; i<list.getChildCount(); i++){
                 LinearLayout r = (LinearLayout)list.getChildAt(i);
                 String txt = ((EditText)r.getChildAt(0)).getText().toString();
                 boolean isCP = ((CheckBox)r.getChildAt(1)).isChecked();
-                if(!txt.isEmpty()) sb.append(txt).append(":::").append(isCP ? "Y" : "N").append("|||");
+                if(!txt.isEmpty()) sb.append(txt).append(":::").append(isCP ? "Y" : "N").append("~~~");
             }
-            p.edit().putString("data", sb.toString()).putInt("idx", 0).apply();
-            Toast.makeText(this, "Lyrics & Checkpoints Synced!", Toast.LENGTH_SHORT).show();
+            p.edit().putString("raw", sb.toString()).putInt("ptr", 0).apply();
+            Toast.makeText(this, "Success! Keyboard Updated.", Toast.LENGTH_SHORT).show();
         });
         root.addView(save);
 
@@ -63,15 +63,16 @@ public class MainActivity extends AppCompatActivity {
         EditText e = new EditText(this);
         e.setHint("Lyric text..."); e.setText(t); e.setTextColor(Color.WHITE);
         CheckBox c = new CheckBox(this);
-        c.setText("Checkpoint"); c.setChecked(cp); c.setTextColor(Color.GRAY);
+        c.setText("CP"); c.setChecked(cp); c.setTextColor(Color.GRAY);
         row.addView(e, new LinearLayout.LayoutParams(0, -2, 1));
         row.addView(c);
         list.addView(row);
     }
 
     private void load() {
-        String data = p.getString("data", "Verse 1:::Y|||I'm feeling good:::N|||");
-        for(String item : data.split("\\\|\\\|")){
+        String data = p.getString("raw", "Verse 1:::Y~~~Welcome to LyricSync:::N~~~");
+        String[] items = data.split(Pattern.quote("~~~"));
+        for(String item : items){
             String[] parts = item.split(":::");
             if(parts.length == 2) addRow(parts[0], parts[1].equals("Y"));
         }

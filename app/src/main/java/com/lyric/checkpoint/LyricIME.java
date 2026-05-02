@@ -6,25 +6,26 @@ import android.widget.*;
 import android.view.inputmethod.InputConnection;
 import android.graphics.Color;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class LyricIME extends InputMethodService {
     private int curIdx = 0;
 
     @Override
     public View onCreateInputView() {
-        SharedPreferences p = getSharedPreferences("cp_lyrics", MODE_PRIVATE);
-        String raw = p.getString("data", "");
-        curIdx = p.getInt("idx", 0);
+        SharedPreferences p = getSharedPreferences("lyric_data", MODE_PRIVATE);
+        String raw = p.getString("raw", "");
+        curIdx = p.getInt("ptr", 0);
 
         final ArrayList<String> lines = new ArrayList<>();
-        final ArrayList<Integer> checkpoints = new ArrayList<>();
+        final ArrayList<Integer> cpIndices = new ArrayList<>();
 
-        String[] items = raw.split("\\\|\\\|");
+        String[] items = raw.split(Pattern.quote("~~~"));
         for(int i=0; i<items.length; i++){
             String[] parts = items[i].split(":::");
             if(parts.length == 2){
                 lines.add(parts[0]);
-                if(parts[1].equals("Y")) checkpoints.add(i);
+                if(parts[1].equals("Y")) cpIndices.add(i);
             }
         }
 
@@ -32,18 +33,17 @@ public class LyricIME extends InputMethodService {
         root.setOrientation(LinearLayout.VERTICAL);
         root.setBackgroundColor(Color.parseColor("#1A1A1A"));
 
-        // Checkpoint Toolbar
-        if(!checkpoints.isEmpty()) {
+        if(!cpIndices.isEmpty()) {
             HorizontalScrollView hsv = new HorizontalScrollView(this);
             LinearLayout cpBar = new LinearLayout(this);
-            for(final int cpIdx : checkpoints) {
+            for(final int idx : cpIndices) {
                 Button cpBtn = new Button(this);
-                cpBtn.setText("JUMP: " + lines.get(cpIdx));
-                cpBtn.setTextSize(10);
+                cpBtn.setText("JUMP: " + lines.get(idx));
+                cpBtn.setTextSize(9);
                 cpBtn.setOnClickListener(v -> {
-                    curIdx = cpIdx;
-                    p.edit().putInt("idx", curIdx).apply();
-                    Toast.makeText(this, "Jumped to " + lines.get(cpIdx), Toast.LENGTH_SHORT).show();
+                    curIdx = idx;
+                    p.edit().putInt("ptr", curIdx).apply();
+                    // We need a way to refresh UI, for now users can just press next
                 });
                 cpBar.addView(cpBtn);
             }
@@ -51,13 +51,12 @@ public class LyricIME extends InputMethodService {
             root.addView(hsv);
         }
 
-        // Main Next Button
         if(!lines.isEmpty()){
             if(curIdx >= lines.size()) curIdx = 0;
             final Button next = new Button(this);
-            next.setText("NEXT: " + lines.get(curIdx));
-            next.setHeight(250);
-            next.setBackgroundColor(Color.parseColor("#3B82F6"));
+            next.setText("SEND: " + lines.get(curIdx));
+            next.setHeight(220);
+            next.setBackgroundColor(Color.parseColor("#10B981"));
             next.setTextColor(Color.WHITE);
             next.setOnClickListener(v -> {
                 InputConnection ic = getCurrentInputConnection();
@@ -65,15 +64,11 @@ public class LyricIME extends InputMethodService {
                     ic.commitText(lines.get(curIdx) + " ", 1);
                     curIdx++;
                     if(curIdx >= lines.size()) curIdx = 0;
-                    p.edit().putInt("idx", curIdx).apply();
-                    next.setText("NEXT: " + lines.get(curIdx));
+                    p.edit().putInt("ptr", curIdx).apply();
+                    next.setText("SEND: " + lines.get(curIdx));
                 }
             });
             root.addView(next);
-        } else {
-            TextView tv = new TextView(this);
-            tv.setText("No data. Open App to setup.");
-            root.addView(tv);
         }
 
         return root;
