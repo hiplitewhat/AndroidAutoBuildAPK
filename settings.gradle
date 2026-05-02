@@ -1,2 +1,2 @@
-rootProject.name = "Lyric Keyboard"
+rootProject.name = "Lyric Sequencer"
 include ':app'
