@@ -1,9 +1,9 @@
 plugins { id 'com.android.application' }
 android {
-    namespace 'com.lyric.checkpoint'
+    namespace 'com.lyric.pro'
     compileSdk 33
     defaultConfig {
-        applicationId "com.lyric.checkpoint"
+        applicationId "com.lyric.pro"
         minSdk 21
         targetSdk 33
         versionCode 1
