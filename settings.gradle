@@ -1,2 +1,2 @@
-rootProject.name = "Lyric Sequencer"
+rootProject.name = "LyricCheckpoint"
 include ':app'
