@@ -3,27 +3,24 @@ name: Build project on PR
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4 # Updated to v4
+        uses: actions/checkout@v3
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'npm'
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
@@ -35,20 +32,24 @@ jobs:
       - name: Build Web Assets
         run: npm run build
 
-      - name: Sync Capacitor Android
+      - name: Initialize & Sync Capacitor
         run: |
-          # Ensure a web assets folder exists so Capacitor doesn't crash
-          mkdir -p dist 
-          mkdir -p www
-          npx cap add android || true
-          npx cap copy android
+          npx cap add android || echo "Android folder already exists"
           npx cap sync android
-      
-      - name: Build Debug APK
-        working-directory: android
-        run: ./gradlew assembleDebug --stacktrace
 
-      - name: Upload APK as artifact
+      - name: Build APK
+        run: |
+          # Verify directory exists before attempting chmod
+          if [ -d "android" ]; then
+            cd android
+            chmod +x gradlew
+            ./gradlew assembleDebug --stacktrace
+          else
+            echo "Error: Android directory was not created successfully."
+            exit 1
+          fi
+
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: debug-apk
