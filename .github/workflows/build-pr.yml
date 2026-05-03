@@ -39,7 +39,6 @@ jobs:
 
       - name: Build APK
         run: |
-          # Verify directory exists before attempting chmod
           if [ -d "android" ]; then
             cd android
             chmod +x gradlew
