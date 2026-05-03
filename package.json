@@ -1,10 +1,23 @@
 {
-  "name": "aninotify",
+  "name": "anime-notifier-app",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "build": "vite build"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@capacitor/android": "latest",
-    "@capacitor/core": "latest"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "lucide-react": "^0.284.0",
+    "@capacitor/core": "^5.0.0",
+    "@capacitor/android": "^5.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.0",
+    "vite": "^4.3.0",
+    "@capacitor/cli": "^5.0.0"
   }
 }

@@ -1,25 +1,30 @@
-name: Android APK Build
+name: Build Android APK
 on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: 'npm'
       - name: Install Dependencies
         run: npm install
-      - name: Build Web Assets
+      - name: Build Web App
         run: npm run build
-      - name: Capacitor Android Build
+      - name: Capacitor Android Sync
         run: |
-          npx cap add android
-          npx cap copy android
-          cd android && ./gradlew assembleDebug
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+          npx cap add android || true
+          npx cap sync android
+      - name: Build APK (Gradle)
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
         with:
-          name: app-debug.apk
+          name: anime-notifier-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
