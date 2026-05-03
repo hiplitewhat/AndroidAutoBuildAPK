@@ -1,1 +1,1 @@
-import React from 'react'; import ReactDOM from 'react-dom/client'; ReactDOM.createRoot(document.getElementById('root')).render(<h1>AniNotify V4 Active</h1>);
+import React from 'react'; import ReactDOM from 'react-dom/client'; ReactDOM.createRoot(document.getElementById('root')).render(<h1>AniNotify PR Build</h1>);
