@@ -1,1 +1,7 @@
-{"name": "anime-notifier", "version": "1.0.0"}
+{
+  "name": "aninotify",
+  "dependencies": {
+    "@capacitor/android": "latest",
+    "@capacitor/core": "latest"
+  }
+}
