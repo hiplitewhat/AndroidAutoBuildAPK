@@ -1,6 +1,5 @@
 {
-  "appId": "com.aninotify.mobile",
-  "appName": "AniNotify Pro",
-  "webDir": "dist",
-  "bundledWebRuntime": false
+  "appId": "com.aninotify.v4",
+  "appName": "AniNotify V4",
+  "webDir": "dist"
 }
