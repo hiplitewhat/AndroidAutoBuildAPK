@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20 # Updated to match GitHub's preferred version
+          node-version: 20
           cache: 'npm'
 
       - name: Set up JDK 17
@@ -30,29 +30,26 @@ jobs:
           cache: gradle
 
       - name: Install JS Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build Web Assets
         run: npm run build
 
       - name: Sync Capacitor Android
-        run: |
-          npx cap sync android
+        run: npx cap sync android
 
-      - name: Make gradlew executable
-        run: chmod +x gradlew
-
-      - name: Build Debug APKBuild APK
+      - name: Build Debug APK
         run: |
+          # Fix permissions for the wrapper and the JAR that was causing the 126 error
           chmod +x gradlew
+          chmod +x android/gradle/wrapper/gradle-wrapper.jar
           ./gradlew :app:assembleDebug --no-daemon
-
-        # We run this from root since that is whe
 
       - name: Upload APK as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: debug-apk
-          # Using a wildcard path handles any subfolder shifts automatically
-          path: "**/build/outputs/apk/debug/*.apk"
+          name: debug-apk-${{ github.run_id }}
+          # Capacitor's default APK output path
+          path: android/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
+
