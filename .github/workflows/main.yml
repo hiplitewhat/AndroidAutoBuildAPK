@@ -16,3 +16,11 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew :app:assembleDebug --no-daemon
+
+      - name: Upload APK as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-apk
+          # Using a wildcard path handles any subfolder shifts automatically
+          path: "**/build/outputs/apk/debug/*.apk"
+          if-no-files-found: error
