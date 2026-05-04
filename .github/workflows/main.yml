@@ -16,3 +16,11 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew :app:assembleDebug --no-daemon
+
+      - name: Upload APK as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-apk-${{ github.run_id }}
+          # Capacitor's default APK output path
+          path: android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
