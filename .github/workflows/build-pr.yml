@@ -42,9 +42,12 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      - name: Build Debug APK
-        # We run this from root since that is where your 'gradlew' lives
-        run: ./gradlew assembleDebug --stacktrace
+      - name: Build Debug APKBuild APK
+        run: |
+          chmod +x gradlew
+          ./gradlew :app:assembleDebug --no-daemon
+
+        # We run this from root since that is whe
 
       - name: Upload APK as artifact
         uses: actions/upload-artifact@v4
