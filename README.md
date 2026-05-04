@@ -1,4 +1,4 @@
-# 🎬 AnimeTracker — Android App
+yyhh# 🎬 AnimeTracker — Android App
 
 An Android app that tracks your favorite anime and sends notifications when new episodes are available. Uses **WorkManager** with **BootReceiver** to ensure background checks survive device reboots.
 
