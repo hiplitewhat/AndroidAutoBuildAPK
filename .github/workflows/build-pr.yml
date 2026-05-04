@@ -43,7 +43,6 @@ jobs:
         run: find . -name "gradlew"
 
       - name: Build Debug APK
-        working-directory: android
         run: |
           # We use 'sh' here as a backup if './' fails
           chmod +x gradlew
