@@ -1,60 +1,15 @@
-name: Build project on PR
-
-on:
-  workflow_dispatch:
-  push:
-    branches: [main]
-  pull_request:
-    types: [opened, synchronize, reopened]
-
+name: Build APK
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: gradle
-
-      - name: Install JS Dependencies
-        run: npm install
-
-      - name: Build Web Assets
-        run: npm run build
-
-      - name: Initialize & Sync Capacitor
-        run: |
-          npx cap add android || echo "Android folder already exists"
-          npx cap sync android
-
-          - name: Build Debug APK
-        working-directory: android  # <--- This tells GitHub to go inside the folder first
-        run: ./gradlew assembleDebug --stacktrace
-
-
-      - name: Build APK
-        run: |
-          if [ -d "android" ]; then
-            cd android
-            chmod +x gradlew
-            ./gradlew assembleDebug --stacktrace
-          else
-            echo "Error: Android directory was not created successfully."
-            exit 1
-          fi
-
+      - uses: actions/checkout@v4
+      - name: set up JDK 17
+        uses: actions/setup-java@v4
+        with: { java-version: '17', distribution: 'temurin' }
+      - name: Build with Gradle
+        run: chmod +x gradlew && ./gradlew :app:assembleDebug
       - name: Upload APK
         uses: actions/upload-artifact@v4
-        with:
-          name: debug-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+        with: { name: app-debug, path: app/build/outputs/apk/debug/app-debug.apk }
