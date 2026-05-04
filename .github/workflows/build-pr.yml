@@ -37,6 +37,11 @@ jobs:
           npx cap add android || echo "Android folder already exists"
           npx cap sync android
 
+          - name: Build Debug APK
+        working-directory: android  # <--- This tells GitHub to go inside the folder first
+        run: ./gradlew assembleDebug --stacktrace
+
+
       - name: Build APK
         run: |
           if [ -d "android" ]; then
