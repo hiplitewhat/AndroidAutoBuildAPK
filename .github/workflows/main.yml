@@ -1,5 +1,5 @@
 name: Build APK
-on: [push]
+on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -7,9 +7,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: set up JDK 17
         uses: actions/setup-java@v4
-        with: { java-version: '17', distribution: 'temurin' }
-      - name: Build with Gradle
-        run: chmod +x gradlew && ./gradlew :app:assembleDebug
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with: { name: app-debug, path: app/build/outputs/apk/debug/app-debug.apk }
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Generate Wrapper (Pinned 8.5)
+        run: gradle wrapper --gradle-version 8.5
+      - name: Build APK
+        run: |
+          chmod +x gradlew
+          ./gradlew :app:assembleDebug --no-daemon
