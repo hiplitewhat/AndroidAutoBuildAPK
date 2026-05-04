@@ -38,6 +38,10 @@ jobs:
           npx cap add android || echo "Android folder already exists"
           npx cap sync android
 
+                - name: Debug Files
+        run: ls -R
+
+
       - name: Build Debug APK
         working-directory: android
         run: |
