@@ -35,7 +35,7 @@ jobs:
       - name: APK Path Teller
         run: | 
           echo "--- DEBUG APK LOCATION ---"
-          find /app/build/outputs/apk/debug -name "*.apk"
+          find android/app/build/outputs/apk/debug -name "*.apk"
           echo "--- RELEASE APK LOCATION ---"
           find android/app/build/outputs/apk/release -name "*.apk"
 
