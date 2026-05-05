@@ -6,6 +6,6 @@ import androidx.compose.material3.Text
 class MainActivity : ComponentActivity() {
  override fun onCreate(s: Bundle?) {
  super.onCreate(s)
- setContent { Text("Dependencies Linked Successfully") }
+ setContent { Text("Apollo 4 Migrated!") }
  }
 }
