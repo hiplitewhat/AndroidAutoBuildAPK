@@ -10,4 +10,4 @@ jobs:
       - name: Build with Gradle
         run: | 
           chmod +x gradlew
-          ./gradlew :app:assembleDebug --stacktrace --no-daemon
+          ./gradlew :app:assembleDebug --no-daemon
