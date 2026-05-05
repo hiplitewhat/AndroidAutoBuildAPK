@@ -18,7 +18,8 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
-      
+      - name: Install Dependencies
+        run: npm ci
 
       - name: Build Web Assets
         run: npm run build
@@ -28,22 +29,22 @@ jobs:
 
       - name: Build APKs (Debug & Release)
         run: |
-        
+          cd android
           chmod +x gradlew
           ./gradlew :app:assembleDebug :app:assembleRelease --no-daemon
 
       - name: APK Path Teller
         run: |
           echo "--- DEBUG APK LOCATION ---"
-          find /app/build/outputs/apk/debug -name "*.apk"
+          find android/app/build/outputs/apk/debug -name "*.apk"
           echo "--- RELEASE APK LOCATION ---"
-          find /app/build/outputs/apk/release -name "*.apk"
+          find android/app/build/outputs/apk/release -name "*.apk"
 
       - name: Upload APKs
         uses: actions/upload-artifact@v4
         with:
           name: my-app-packages
           path: |
-            /app/build/outputs/apk/debug/app-debug.apk
+            android/app/build/outputs/apk/debug/app-debug.apk
             android/app/build/outputs/apk/release/app-release-unsigned.apk
           if-no-files-found: error
