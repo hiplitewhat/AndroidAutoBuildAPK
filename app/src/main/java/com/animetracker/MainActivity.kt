@@ -23,7 +23,9 @@ class MainActivity : ComponentActivity() {
                     ) {
                         Text("Build Success", fontSize = 24.sp, fontWeight = FontWeight.Black)
                         Spacer(Modifier.height(8.dp))
-                        Text("Material3 Theme Linked", color = MaterialTheme.colorScheme.primary)
+                        Text("Material3 + Gradle Linked", color = MaterialTheme.colorScheme.primary)
+                        Spacer(Modifier.height(16.dp))
+                        Text("V19.2", style = MaterialTheme.typography.labelSmall)
                     }
                 }
             }
