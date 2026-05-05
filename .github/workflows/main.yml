@@ -19,7 +19,7 @@ jobs:
           cache: 'gradle'
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build Web Assets
         run: npm run build
@@ -29,14 +29,13 @@ jobs:
 
       - name: Build APKs (Debug & Release)
         run: |
-          cd android
           chmod +x gradlew
           ./gradlew :app:assembleDebug :app:assembleRelease --no-daemon
 
       - name: APK Path Teller
-        run: |
+        run: | 
           echo "--- DEBUG APK LOCATION ---"
-          find android/app/build/outputs/apk/debug -name "*.apk"
+          find /app/build/outputs/apk/debug -name "*.apk"
           echo "--- RELEASE APK LOCATION ---"
           find android/app/build/outputs/apk/release -name "*.apk"
 
@@ -45,6 +44,6 @@ jobs:
         with:
           name: my-app-packages
           path: |
-            android/app/build/outputs/apk/debug/app-debug.apk
+            /app/build/outputs/apk/debug/app-debug.apk
             android/app/build/outputs/apk/release/app-release-unsigned.apk
           if-no-files-found: error
