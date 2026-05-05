@@ -8,6 +8,6 @@ jobs:
       - uses: actions/setup-java@v4
         with: { java-version: '17', distribution: 'temurin' }
       - run: gradle wrapper --gradle-version 8.5
-      - run: |
+      - run: | 
           chmod +x gradlew
           ./gradlew :app:assembleDebug --no-daemon
