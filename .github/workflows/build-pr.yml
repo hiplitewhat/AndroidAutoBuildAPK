@@ -42,7 +42,7 @@ jobs:
         run: |
           # Fix permissions for the wrapper and the JAR that was causing the 126 error
           chmod +x gradlew
-          chmod +x android/gradle/wrapper/gradle-wrapper.jar
+          chmod +x /gradle/wrapper/gradle-wrapper.jar
           ./gradlew :app:assembleDebug --no-daemon
 
       - name: Upload APK as artifact
