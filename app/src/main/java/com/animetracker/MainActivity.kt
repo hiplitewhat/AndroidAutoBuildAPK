@@ -7,6 +7,6 @@ import androidx.compose.material3.Text
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { Text("V22: Mutation Lock Fixed") }
+        setContent { Text("V23: HasConvention Fix Applied") }
     }
 }
