@@ -7,7 +7,6 @@ on:
 jobs:
   build:
     # Logic: Only run if it's NOT a PR comment AND it's on issue #1
-    if: ${{ !github.event.issue.pull_request && github.event.issue.number == 1 }}
     runs-on: ubuntu-latest
     
     # Required for modern GitHub Actions to create releases/upload assets
