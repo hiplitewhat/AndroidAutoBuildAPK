@@ -1,10 +1,12 @@
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'
 }
+
 android {
     namespace 'com.animetracker'
     compileSdk 34
+
     defaultConfig {
         applicationId 'com.animetracker'
         minSdk 24
@@ -12,25 +14,33 @@ android {
         versionCode 1
         versionName '1.0'
     }
-    buildFeatures {
-        compose true
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion '1.5.10'
-    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = '17'
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        // Modern approach: ensures no mutation after lock
+        kotlinCompilerExtensionVersion '1.5.10'
     }
 }
+
 dependencies {
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
