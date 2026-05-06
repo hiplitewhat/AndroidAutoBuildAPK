@@ -6,6 +6,6 @@ import androidx.compose.material3.Text
 class MainActivity : ComponentActivity() {
  override fun onCreate(s: Bundle?) {
  super.onCreate(s)
- setContent { Text("Build Stabilized!") }
+ setContent { Text("Build Finalized with Data Models!") }
  }
 }
