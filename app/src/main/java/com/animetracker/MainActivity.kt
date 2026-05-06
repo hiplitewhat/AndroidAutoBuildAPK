@@ -13,24 +13,30 @@ import androidx.compose.ui.unit.dp
 import androidx.work.*
 import coil.compose.AsyncImage
 import com.animetracker.worker.AnimeWorker
-import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
 import java.util.concurrent.TimeUnit
 
+// Defining Interface here to ensure it's always resolved
+interface JikanService {
+    @GET("top/anime")
+    suspend fun getTopAnime(): AnimeResponse
+}
+
 class MainActivity : ComponentActivity() {
-    private val jikanApi by lazy {
-        Retrofit.Builder()
+    // Explicitly typed Lazy to fix 'getValue' inference error
+    private val jikanApi: JikanService by lazy {
+        val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl("https://api.jikan.moe/v4/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(JikanService::class.java)
+        retrofit.create(JikanService::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        // Auto-schedule background task
         val workRequest = PeriodicWorkRequestBuilder<AnimeWorker>(15, TimeUnit.MINUTES).build()
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             "AnimeTrackerWork",
@@ -41,7 +47,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             var animeList by remember { mutableStateOf<List<AnimeData>>(emptyList()) }
             var isLoading by remember { mutableStateOf(true) }
-            val scope = rememberCoroutineScope()
 
             LaunchedEffect(Unit) {
                 try {
@@ -57,7 +62,7 @@ class MainActivity : ComponentActivity() {
             Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                 Column {
                     Text(
-                        "Top Anime (Live Jikan API)", 
+                        "AniList Tracker v24", 
                         style = MaterialTheme.typography.headlineMedium,
                         modifier = Modifier.padding(16.dp)
                     )
