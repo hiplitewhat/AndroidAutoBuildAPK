@@ -25,7 +25,11 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import java.util.concurrent.TimeUnit
 
-// Data classes REMOVED — already exist in Models.kt (fixes redeclaration errors)
+// Import models from existing Models.kt
+import com.animetracker.AnimeResponse
+import com.animetracker.AnimeData
+import com.animetracker.AnimeImages
+import com.animetracker.ImageJpg
 
 interface JikanService {
     @GET("v4/anime/{id}")
@@ -68,7 +72,6 @@ class MainActivity : ComponentActivity() {
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
 
-        // Fixed Type: PeriodicWorkRequest instead of raw WorkRequest
         val syncWork: PeriodicWorkRequest = PeriodicWorkRequestBuilder<AnimeSyncWorker>(15, TimeUnit.MINUTES)
             .setConstraints(constraints)
             .build()
